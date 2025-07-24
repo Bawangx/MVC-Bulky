@@ -1,0 +1,87 @@
+﻿@model RoleManagmentVM
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <!-- Judul halaman -->
+                <h2 class="text-white py-2">Manage User Role</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body p-4">
+        <!-- Form untuk submit data role user -->
+        <form method="post">
+
+            <!-- Input tersembunyi untuk menyimpan Id User -->
+            <input asp-for="ApplicationUser.Id" type="hidden" />
+
+            <div class="border p-3">
+
+                <!-- Menampilkan daftar error validasi -->
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <!-- Input untuk Nama User -->
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="ApplicationUser.Name" readonly class="form-control border-0 shadow" placeholder=" " />
+                    <label asp-for="ApplicationUser.Name"></label>
+                </div>
+
+                <!-- Dropdown untuk memilih Role -->
+                <div class="form-floating py-2 col-12">
+                    <select asp-for="ApplicationUser.Role" asp-items="@Model.RoleList" class="form-select"></select>
+                    <label asp-for="ApplicationUser.Role">Role</label>
+                </div>
+
+                @{
+                    var companyVisible = "dispay:none;";
+                }
+                @if (Model.ApplicationUser.Role == SD.Role_Company)
+                {
+                    companyVisible = "display:block;";
+                }
+
+                <!-- Dropdown untuk memilih Perusahaan -->
+                <div class="form-floating py-2 col-12">
+                    <select asp-for="ApplicationUser.CompanyId" style="@companyVisible" asp-items="@Model.CompanyList" class="form-select"></select>
+                    <label asp-for="ApplicationUser.CompanyId">Company</label>
+                </div>
+
+                <!-- Tombol submit -->
+                <div class="row pt-2">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-primary form-control">Update Role</button>
+                    </div>
+
+                    <!-- Tombol kembali ke halaman Index -->
+                    <div class="col-6 col-md-3">
+                        <a asp-action="Index" class="btn btn-outline-primary border form-control">
+                            Back To List
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Partial view untuk mengaktifkan validasi sisi client -->
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            // Event ketika dropdown role berubah
+            $('#Input_Role').change(function () {
+                var selection = $('#ApplicationUser_Role option:selected').text();
+                if (selection == 'Company') {
+                    $('#ApplicaionUser_CompanyId').show(); // Tampilkan dropdown Company jika role 'Company'
+                } else {
+                    $('#ApplicationUser_CompanyId').hide(); // Sembunyikan jika bukan
+                }
+            });
+        });
+    </script>
+}

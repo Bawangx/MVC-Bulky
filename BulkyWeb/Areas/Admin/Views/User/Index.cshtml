@@ -1,0 +1,37 @@
+﻿<!-- Partial view untuk menampilkan notifikasi (pesan sukses/gagal) -->
+<partial name="_Notification" />
+
+<!-- Card utama sebagai kontainer daftar pengguna -->
+<div class="card shadow border-0 my-4">
+    <!-- Header card -->
+    <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">User List</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabel daftar pengguna -->
+    <table id="tbData" class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>Name</th>       <!-- Nama pengguna -->
+                <th>Email</th>      <!-- Email pengguna -->
+                <th>Phone</th>      <!-- Nomor telepon pengguna -->
+                <th>Company</th>    <!-- Nama perusahaan (jika ada) -->
+                <th>Role</th>       <!-- Peran/role pengguna -->
+                <th></th>           <!-- Kolom kosong untuk tombol aksi (misalnya: edit/hapus) -->
+            </tr>
+        </thead>
+        <tbody>
+            @* Data akan di-load secara otomatis oleh DataTables menggunakan AJAX di user.js *@
+        </tbody>
+    </table>
+</div>
+
+<!-- Bagian untuk menyisipkan script JS -->
+@section Scripts {
+    <!-- Script user.js digunakan untuk mengatur DataTables dan memuat data dari server -->
+    <script src="~/js/user.js"></script>
+}

@@ -1,0 +1,14 @@
+﻿@model string
+
+@if (!String.IsNullOrEmpty(Model))
+{
+    // Tentukan kelas CSS alert berdasarkan isi pesan:
+    // Jika pesan diawali dengan kata "Error", pakai alert berwarna merah (danger),
+    // selain itu dianggap pesan sukses (success)
+    var statusMessageClass = Model.StartsWith("Error") ? "danger" : "success";
+
+    <div class="alert alert-@statusMessageClass alert-dismissible" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        @Model <!-- Tampilkan pesan status -->
+    </div>
+}

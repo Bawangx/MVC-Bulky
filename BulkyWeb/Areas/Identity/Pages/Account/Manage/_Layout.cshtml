@@ -1,0 +1,38 @@
+﻿@{
+    // Mengecek apakah ViewData berisi key "ParentLayout"
+    // Jika ada, layout yang digunakan adalah yang ditentukan di ViewData["ParentLayout"]
+    // Jika tidak ada, maka gunakan layout default di /Views/Shared/_Layout.cshtml
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout != null)
+    {
+        Layout = parentLayout.ToString();
+    }
+    else
+    {
+        Layout = "/Views/Shared/_Layout.cshtml";
+    }
+}
+
+<h1>Manage your account</h1>
+
+<div>
+    <h2>Change your account settings</h2>
+    <hr />
+    <div class="row">
+        <!-- Bagian navigasi di sebelah kiri -->
+        <div class="col-md-3">
+            <!-- Memanggil partial view _ManageNav.cshtml yang berisi menu navigasi -->
+            <partial name="_ManageNav" />
+        </div>
+
+        <!-- Bagian konten utama di sebelah kanan -->
+        <div class="col-md-9">
+            <!-- Render isi konten halaman sesuai page yang memanggil layout ini -->
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Render section script jika ada pada halaman yang menggunakan layout ini -->
+    @RenderSection("Scripts", required: false)
+}

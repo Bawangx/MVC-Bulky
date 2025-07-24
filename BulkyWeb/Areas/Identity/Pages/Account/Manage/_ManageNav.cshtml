@@ -1,0 +1,41 @@
+@using Bulky.Models
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
+    // Cek apakah user memiliki login eksternal (misalnya login lewat Google, Facebook)
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
+<ul class="nav nav-pills flex-column">
+    <!-- Menu Profile -->
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a>
+    </li>
+
+    <!-- Menu Email -->
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a>
+    </li>
+
+    <!-- Menu Change Password -->
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a>
+    </li>
+
+    <!-- Menu External Logins, hanya tampil jika user memiliki login eksternal -->
+    @if (hasExternalLogins)
+    {
+        <li id="external-logins" class="nav-item">
+            <a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a>
+        </li>
+    }
+
+    <!-- Menu Two-Factor Authentication -->
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a>
+    </li>
+
+    <!-- Menu Personal Data -->
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a>
+    </li>
+</ul>

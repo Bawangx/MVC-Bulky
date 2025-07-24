@@ -1,0 +1,77 @@
+﻿@page
+@model EmailModel
+@{
+    ViewData["Title"] = "Manage Email";
+    ViewData["ActivePage"] = ManageNavPages.Email;
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<!-- Komponen untuk menampilkan status pesan dari server -->
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<div class="row">
+    <div class="col-md-6">
+        <!-- Form pengaturan email -->
+        <form id="email-form" method="post">
+
+            <!-- Menampilkan error validasi -->
+            <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+
+            @if (Model.IsEmailConfirmed)
+            {
+                <!-- Jika email sudah terverifikasi, tampilkan email (disabled) dengan tanda centang -->
+                <div class="form-floating mb-3 input-group">
+                    <input asp-for="Email" class="form-control" placeholder="Please enter your email." disabled />
+                    <div class="input-group-append">
+                        <span class="h-100 input-group-text text-success font-weight-bold">✓</span>
+                    </div>
+                    <label asp-for="Email" class="form-label"></label>
+                </div>
+            }
+            else
+            {
+                <!-- Jika email belum terverifikasi, tampilkan email (disabled) dan tombol verifikasi -->
+                <div class="form-floating mb-3">
+                    <input asp-for="Email" class="form-control" placeholder="Please enter your email." disabled />
+                    <label asp-for="Email" class="form-label"></label>
+
+                    <!-- Tombol untuk kirim email verifikasi -->
+                    <button id="email-verification"
+                            type="submit"
+                            asp-page-handler="SendVerificationEmail"
+                            class="btn btn-link">
+                        Send verification email
+                    </button>
+                </div>
+            }
+
+            <!-- Input untuk mengganti email baru -->
+            <div class="form-floating mb-3">
+                <input asp-for="Input.NewEmail"
+                       class="form-control"
+                       autocomplete="email"
+                       aria-required="true"
+                       placeholder="Please enter new email." />
+                <label asp-for="Input.NewEmail" class="form-label"></label>
+
+                <!-- Tampilkan error validasi untuk email baru -->
+                <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
+            </div>
+
+            <!-- Tombol untuk memproses perubahan email -->
+            <button id="change-email-button"
+                    type="submit"
+                    asp-page-handler="ChangeEmail"
+                    class="w-100 btn btn-lg btn-primary">
+                Change email
+            </button>
+
+        </form>
+    </div>
+</div>
+
+<!-- Menambahkan validasi client-side -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

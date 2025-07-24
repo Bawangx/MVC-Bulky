@@ -1,0 +1,85 @@
+﻿@page
+@model ExternalLoginsModel
+
+@{
+    // Judul halaman
+    ViewData["Title"] = "Manage your external logins";
+
+    // Menandai halaman aktif di navigasi sidebar
+    ViewData["ActivePage"] = ManageNavPages.ExternalLogins;
+}
+
+<!-- Menampilkan pesan status jika ada -->
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<!-- Menampilkan daftar login eksternal yang sudah dikaitkan -->
+@if (Model.CurrentLogins?.Count > 0)
+{
+    <h3>Registered Logins</h3>
+
+    <table class="table">
+        <tbody>
+            @foreach (var login in Model.CurrentLogins)
+            {
+                <tr>
+                    <!-- Menampilkan nama provider (misal Google, Facebook) -->
+                    <td id="@($"login-provider-{login.LoginProvider}")">
+                        @login.ProviderDisplayName
+                    </td>
+
+                    <td>
+                        @if (Model.ShowRemoveButton)
+                        {
+                            <!-- Jika diperbolehkan, tampilkan tombol hapus login eksternal -->
+                            <form id="@($"remove-login-{login.LoginProvider}")" asp-page-handler="RemoveLogin" method="post">
+                                <div>
+                                    <!-- Hidden input membawa data login provider dan provider key -->
+                                    <input asp-for="@login.LoginProvider" name="LoginProvider" type="hidden" />
+                                    <input asp-for="@login.ProviderKey" name="ProviderKey" type="hidden" />
+
+                                    <!-- Tombol hapus -->
+                                    <button type="submit" class="btn btn-primary"
+                                            title="Remove this @login.ProviderDisplayName login from your account">
+                                        Remove
+                                    </button>
+                                </div>
+                            </form>
+                        }
+                        else
+                        {
+                            <!-- Jika tidak bisa dihapus, tampilkan ruang kosong -->
+                            @: &nbsp;
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<!-- Menampilkan opsi untuk menambahkan login eksternal baru -->
+@if (Model.OtherLogins?.Count > 0)
+{
+    <h4>Add another service to log in.</h4>
+    <hr />
+
+    <!-- Form untuk memproses link provider baru -->
+    <form id="link-login-form" asp-page-handler="LinkLogin" method="post" class="form-horizontal">
+        <div id="socialLoginList">
+            <p>
+                @foreach (var provider in Model.OtherLogins)
+                {
+                    <!-- Tombol untuk menautkan akun login eksternal -->
+                    <button id="@($"link-login-button-{provider.Name}")"
+                            type="submit"
+                            class="btn btn-primary"
+                            name="provider"
+                            value="@provider.Name"
+                            title="Log in using your @provider.DisplayName account">
+                        @provider.DisplayName
+                    </button>
+                }
+            </p>
+        </div>
+    </form>
+}

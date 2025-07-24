@@ -1,0 +1,26 @@
+﻿@page
+@model LogoutModel
+@{
+    ViewData["Title"] = "Log out";
+}
+
+<header>
+    <h1>@ViewData["Title"]</h1>
+
+    @{
+        // Cek apakah user sedang login/authenticated
+        if (User.Identity?.IsAuthenticated ?? false)
+        {
+            // Jika user sedang login, tampilkan tombol logout dalam form POST
+            // Form ini mengirim POST ke halaman Logout agar proses logout berjalan aman
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                <button type="submit" class="nav-link btn btn-link text-dark">Click here to Logout</button>
+            </form>
+        }
+        else
+        {
+            // Jika user sudah logout, tampilkan pesan konfirmasi logout sukses
+            <p>You have successfully logged out of the application.</p>
+        }
+    }
+</header>

@@ -1,0 +1,20 @@
+﻿@model int
+
+<div class="container row pt-4">
+    <div class="col-12 text-center">
+        <!-- Judul utama dengan warna biru -->
+        <h1 class="text-primary">Payment Successfully!</h1>
+
+        <!-- Tampilkan nomor order dari model -->
+        <p>Order Number: <strong>@Model</strong></p>
+    </div>
+    <div class="col-12 text-center" style="color: maroon;">
+        <p>
+            Payment has been applied successfully!
+        </p>
+        <!-- Link kembali ke halaman detail order dengan nomor order sebagai route parameter -->
+        <a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-orderId="@Model" class="btn btn-primary">
+            Back To Order Details
+        </a>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+@using Bulky.Models
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!-- Login/Logout Navigation Menu -->
+<ul class="navbar-nav">
+
+    @* Check if the user is signed in *@
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <!-- If user is logged in, show greeting and logout button -->
+        <li class="nav-item">
+            <a id="manage" class="nav-link"
+               asp-area="Identity"
+               asp-page="/Account/Manage/Index"
+               title="Manage">
+                Hello @UserManager.GetUserName(User)!
+            </a>
+        </li>
+
+        <!-- Logout form (using POST for security reasons) -->
+        <li class="nav-item">
+            <form id="logoutForm" class="form-inline"
+                  asp-area="Identity"
+                  asp-page="/Account/Logout"
+                  asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button id="logout"
+                        type="submit"
+                        class="nav-link btn btn-link border-0">
+                    Logout
+                </button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <!-- If user is not logged in, show Register and Login links -->
+        <li class="nav-item">
+            <a class="nav-link text-dark"
+               id="register"
+               asp-area="Identity"
+               asp-page="/Account/Register">
+                Register
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link text-dark"
+               id="login"
+               asp-area="Identity"
+               asp-page="/Account/Login">
+                Login
+            </a>
+        </li>
+    }
+</ul>

@@ -1,0 +1,53 @@
+﻿@model List<Product>
+
+<!-- Menampilkan notifikasi (sukses / gagal) -->
+<partial name="_Notification" />
+
+<!-- Kartu utama untuk menampilkan daftar produk -->
+<div class="card shadow border-0 my-4">
+    <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Product List</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body p-4">
+        <!-- Bagian atas: tombol "Create New Product" -->
+        <div class="row pb-3">
+            <div class="col-6">
+                <!-- Kolom kiri dibiarkan kosong (bisa diisi info lain jika mau) -->
+            </div>
+            <div class="col-6 text-end">
+                <!-- Tombol untuk membuat produk baru -->
+                <a asp-controller="Product" asp-action="Upsert" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Create New Product
+                </a>
+            </div>
+        </div>
+
+        <!-- Tabel produk (data akan diisi secara otomatis lewat DataTables AJAX) -->
+        <table id="tbData" class="table table-bordered table-striped w-100 align-content-center">
+            <thead>
+                <tr>
+                    <th>Title</th>       <!-- Judul Produk -->
+                    <th>ISBN</th>        <!-- Nomor ISBN -->
+                    <th>Price</th>       <!-- Harga -->
+                    <th>Author</th>      <!-- Penulis -->
+                    <th>Category</th>    <!-- Kategori -->
+                    <th>Actions</th>     <!-- Tombol Edit/Hapus -->
+                </tr>
+            </thead>
+            <tbody>
+                @* Data akan diambil secara otomatis menggunakan DataTables (melalui file JS) *@
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Bagian untuk menyertakan file JavaScript -->
+@section Scripts {
+    <!-- Memuat file JS untuk DataTables yang akan mengisi tabel di atas -->
+    <script src="~/js/product.js"></script>
+}

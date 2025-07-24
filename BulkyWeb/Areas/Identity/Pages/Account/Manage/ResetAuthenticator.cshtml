@@ -1,0 +1,32 @@
+﻿@page
+@model ResetAuthenticatorModel
+@{
+    ViewData["Title"] = "Reset authenticator key";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication; // Menandai menu aktif pada navigasi Manage Account
+}
+
+<!-- Partial view untuk menampilkan pesan status (error/sukses) -->
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<h3>@ViewData["Title"]</h3>
+
+<!-- Peringatan penting untuk pengguna mengenai reset key authenticator -->
+<div class="alert alert-warning" role="alert">
+    <p>
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        <strong>If you reset your authenticator key your authenticator app will not work until you reconfigure it.</strong>
+    </p>
+    <p>
+        This process disables 2FA until you verify your authenticator app.
+        If you do not complete your authenticator app configuration you may lose access to your account.
+    </p>
+</div>
+
+<!-- Form sederhana untuk melakukan reset authenticator key -->
+<div>
+    <form id="reset-authenticator-form" method="post">
+        <button id="reset-authenticator-button" class="btn btn-danger" type="submit">
+            Reset authenticator key
+        </button>
+    </form>
+</div>

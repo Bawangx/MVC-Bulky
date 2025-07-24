@@ -1,0 +1,70 @@
+﻿<!-- View menerima list produk sebagai model -->
+@model IEnumerable<Product>
+
+<!-- Membuat grid produk -->
+<div class="row pb-3">
+
+    <!-- Loop setiap produk dalam daftar -->
+    @foreach (var product in Model)
+    {
+        <!-- Satu kolom produk -->
+        <div class="col-lg-3 col-sm-6">
+            <div class="row p-2">
+                <div class="col-12 p-1">
+                    <!-- Kartu produk -->
+                    <div class="card border-0 p-3 shadow border-top border-5 rounded">
+
+                        <!-- Gambar produk -->
+                        @if (product.ProductImages != null && product.ProductImages.Count() > 0)
+                        {
+                            <img src="@product.ProductImages.FirstOrDefault().ImageUrl" class="card-img-top rounded" />
+                        }
+                        else
+                        {
+                            <img src="https://placehold.co/500x600/png" class="card-img-top rounder" />  
+                        }
+
+
+                        <!-- Judul dan author produk -->
+                        <div class="card-body pb-0">
+                            <p class="card-title h5 text-dark opacity-75 text-uppercase text-center">
+                                @product.Title
+                            </p>
+                            <p class="card-title text-warning text-center">
+                                by <b>@product.Author</b>
+                            </p>
+                        </div>
+
+                        <!-- Harga list (dicoret) -->
+                        <div class="pl-1">
+                            <p class="card-title opacity-75 text-center mb-0">
+                                List Price :
+                                <span class="text-decoration-line-through ">
+                                    @product.ListPrice.ToString("c")
+                                </span>
+                            </p>
+                        </div>
+
+                        <!-- Harga termurah -->
+                        <div class="pl-1">
+                            <p class="card-title opacity-75 text-center">
+                                As Low As :
+                                <span>@product.Price100.ToString("c")</span>
+                            </p>
+                        </div>
+
+                    </div> <!-- Akhir kartu -->
+
+                    <!-- Tombol lihat detail produk -->
+                    <a asp-action="Details"
+                       asp-route-productId="@product.Id"
+                       class="btn btn-primary bg-gradient border-0 form-control">
+                        Details
+                    </a>
+
+                </div>
+            </div>
+        </div> <!-- Akhir kolom produk -->
+    }
+
+</div> <!-- Akhir grid produk -->

@@ -1,0 +1,70 @@
+﻿@model List<Category>
+
+@* Partial untuk notifikasi, bisa diaktifkan kalau dibutuhkan *@
+<partial name="_Notification" />
+
+@* Contoh menampilkan pesan sukses dari TempData, bisa diaktifkan jika ingin menampilkan pesan setelah operasi berhasil *@
+
+@if (TempData["Success"] != null)
+{
+    <h2>@TempData["Success"]</h2>
+}
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <!-- Judul halaman daftar kategori -->
+                <h2 class="text-white py-2">Category List</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body p-4">
+        <div class="row pb-3">
+            <div class="col-6">
+                <!-- Bisa isi konten tambahan di sini jika perlu -->
+            </div>
+            <div class="col-6 text-end">
+                <!-- Tombol untuk menuju halaman create category -->
+                <a asp-action="Create" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Create New Category
+                </a>
+            </div>
+        </div>
+
+        <!-- Tabel daftar kategori -->
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Category Name</th>
+                    <th>Display Order</th>
+                    <th>Actions</th> <!-- Kolom aksi edit dan delete -->
+                </tr>
+            </thead>
+            <tbody>
+                @* Looping data kategori yang sudah diurutkan berdasarkan DisplayOrder *@
+                @foreach (var obj in Model.OrderBy(u => u.DisplayOrder))
+                {
+                    <tr>
+                        <td>@obj.Name</td> <!-- Nama kategori -->
+                        <td>@obj.DisplayOrder</td> <!-- Urutan tampil -->
+                        <td>
+                            <div class="w-75 btn-group" role="group">
+                                <!-- Tombol Edit -->
+                                <a asp-controller="Category" asp-action="Edit" asp-route-id="@obj.Id" class="btn btn-primary mx-2">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
+
+                                <!-- Tombol Delete -->
+                                <a asp-controller="Category" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger mx-2">
+                                    <i class="bi bi-trash-fill"></i> Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

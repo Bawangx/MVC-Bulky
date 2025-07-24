@@ -1,0 +1,46 @@
+﻿@page
+@model IndexModel
+@{
+    // Judul halaman yang akan ditampilkan di <h3> dan bisa dipakai di layout atau breadcrumb
+    ViewData["Title"] = "Profile";
+
+    // Mengatur halaman aktif untuk navigasi menggunakan ManageNavPages
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<!-- Partial untuk menampilkan pesan status (misal: sukses atau error) -->
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<div class="row">
+    <div class="col-md-6">
+        <!-- Form profil untuk update data pengguna -->
+        <form id="profile-form" method="post">
+            <!-- Validasi ringkasan error model, hanya tampil jika ada error -->
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+            <!-- Field username: readonly/disabled, tidak bisa diubah -->
+            <div class="form-floating mb-3">
+                <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
+                <label asp-for="Username" class="form-label"></label>
+            </div>
+
+            <!-- Field input untuk nomor telepon, bisa diedit -->
+            <div class="form-floating mb-3">
+                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number." />
+                <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                <!-- Validasi pesan untuk field nomor telepon -->
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <!-- Tombol submit form untuk menyimpan perubahan -->
+            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Partial untuk mengikutsertakan skrip validasi jQuery unobtrusive -->
+    <partial name="_ValidationScriptsPartial" />
+}

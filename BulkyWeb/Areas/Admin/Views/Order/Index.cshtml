@@ -1,0 +1,100 @@
+﻿<partial name="_Notification" />
+
+@{
+    // Ambil parameter 'status' dari query string URL
+    var status = Context.Request.Query["status"];
+
+    // Default kelas CSS untuk setiap status (warna biru)
+    var pending = "text-primary";
+    var inprocess = "text-primary";
+    var completed = "text-primary";
+    var approved = "text-primary";
+    var all = "text-primary";
+
+    // Set kelas CSS 'active' dan warna putih background biru untuk status yang aktif
+    switch (status.ToString().ToLower())
+    {
+        case "pending":
+            pending = "active text-white bg-primary";
+            break;
+        case "inprosess":  // typo? kemungkinan maksudnya "inprocess"
+            inprocess = "active text-white bg-primary";
+            break;
+        case "completed":
+            completed = "active text-white bg-primary";
+            break;
+        case "approved":
+            approved = "active text-white bg-primary";
+            break;
+        case "all":
+            all = "active text-white bg-primary";
+            break;
+    }
+}
+
+<div class="card shadow border-0 my-4">
+    <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Order List</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body p-4">
+        <!-- Filter status order dalam bentuk list horizontal -->
+        <div class="d-flex justify-content-between pb-5 pt-2">
+            <span></span> <!-- spacer -->
+            <ul class="list-group list-group-horizontal-sm">
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="inprosess">
+                <li class="list-group-item @inprocess">
+                    In Process
+                </li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="pending">
+                <li class="list-group-item @pending">
+                    Payment Pending
+                </li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="completed">
+                <li class="list-group-item @completed">
+                    Completed
+                </li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="approved">
+                <li class="list-group-item @approved">
+                    Approve
+                </li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="all">
+                <li class="list-group-item @all">
+                    All
+                </li>
+                </a>
+            </ul>
+        </div>
+
+        <!-- Tabel untuk menampilkan daftar order, isinya akan diisi via AJAX -->
+        <table id="tbData" class="table table-bordered table-striped w-100 align-content-center">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Totals</th>
+                    <th></th> <!-- Kolom untuk aksi, misalnya detail/edit -->
+                </tr>
+            </thead>
+            <tbody>
+                @* Data akan dimuat secara dinamis melalui DataTables AJAX *@
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Script khusus untuk mengatur fungsi DataTables dan AJAX -->
+    <script src="~/js/order.js"></script>
+}

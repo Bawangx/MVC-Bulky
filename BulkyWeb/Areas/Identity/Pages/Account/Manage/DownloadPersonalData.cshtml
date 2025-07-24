@@ -1,0 +1,14 @@
+﻿@page
+@model DownloadPersonalDataModel
+@{
+    // Judul halaman yang ditampilkan di browser dan header
+    ViewData["Title"] = "Download Your Data";
+    // Menandai halaman aktif untuk navigasi (highlight menu)
+    ViewData["ActivePage"] = ManageNavPages.PersonalData;
+}
+
+<h3>@ViewData["Title"]</h3> <!-- Menampilkan judul halaman -->
+<!-- Bagian Scripts yang memuat skrip validasi form jika ada -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,115 @@
+﻿@model Company
+
+<div class="card shadow border-0 my-4">
+    <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <!-- Judul dinamis: Update jika ada ID, Create jika tidak -->
+                <h2 class="text-white py-2">@(Model.Id != 0 ? "Update" : "Create") Company</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body p-4">
+        <form method="post" enctype="multipart/form-data" class="row">
+            <!-- Id tersembunyi untuk pengeditan -->
+            <input asp-for="Id" hidden />
+
+            <div class="col-12">
+                <div class="border p-3">
+
+                    <!-- Input Nama Perusahaan -->
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="Name" class="form-control border-0 shadow" placeholder=" " />
+                        <label asp-for="Name"></label>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <!-- Input Nomor Telepon -->
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="PhoneNumber" class="form-control border-0 shadow" placeholder=" " />
+                        <label asp-for="PhoneNumber"></label>
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <!-- Input Alamat Jalan -->
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="StreetAddress" class="form-control border-0 shadow" placeholder=" " />
+                        <label asp-for="StreetAddress"></label>
+                        <span asp-validation-for="StreetAddress" class="text-danger"></span>
+                    </div>
+
+                    <!-- Input Kota -->
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="City" class="form-control border-0 shadow" placeholder=" " />
+                        <label asp-for="City"></label>
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+
+                    <!-- Input Provinsi / State -->
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="State" class="form-control border-0 shadow" placeholder=" " />
+                        <label asp-for="State"></label>
+                        <span asp-validation-for="State" class="text-danger"></span>
+                    </div>
+
+                    <!-- Input Kode Pos -->
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="PostalCode" class="form-control border-0 shadow" placeholder=" " />
+                        <label asp-for="PostalCode"></label>
+                        <span asp-validation-for="PostalCode" class="text-danger"></span>
+                    </div>
+
+                    <!-- Tombol aksi -->
+                    <div class="row pt-3">
+                        <div class="col-6 col-md-3">
+                            @if (Model.Id != 0)
+                            {
+                                <button type="submit" class="btn btn-primary form-control">Update</button>
+                            }
+                            else
+                            {
+                                <button type="submit" class="btn btn-primary form-control">Create</button>
+                            }
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <!-- Link kembali ke daftar company -->
+                            <a asp-controller="Company" asp-action="Index" class="btn btn-outline-primary border form-control">
+                                Back To List
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @* Inisialisasi TinyMCE (editor teks kaya MS Word) jika ada textarea (meskipun di sini gak ada textarea) *@
+    <script>
+        tinymce.init({
+          selector: 'textarea', // target textarea
+          plugins: [
+            'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media',
+            'searchreplace', 'table', 'visualblocks', 'wordcount',
+            'checklist', 'mediaembed', 'casechange', 'formatpainter', 'pageembed', 'a11ychecker',
+            'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage',
+            'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags',
+            'autocorrect', 'typography', 'inlinecss', 'markdown','importword', 'exportword', 'exportpdf'
+          ],
+          toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+          tinycomments_mode: 'embedded',
+          tinycomments_author: 'Author name',
+          mergetags_list: [
+            { value: 'First.Name', title: 'First Name' },
+            { value: 'Email', title: 'Email' },
+          ],
+          ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
+        });
+    </script>
+
+    @* Validasi client-side untuk form *@
+    <partial name="_ValidationScriptsPartial" />
+}

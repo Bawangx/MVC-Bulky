@@ -1,0 +1,105 @@
+﻿@page
+@model EnableAuthenticatorModel
+
+@{
+    // Judul halaman yang akan tampil di browser
+    ViewData["Title"] = "Configure authenticator app";
+
+    // Menandai halaman aktif di navigasi sidebar (agar highlight di menu)
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+}
+
+<!-- Menampilkan pesan status (jika ada), misalnya: "2FA berhasil diaktifkan" -->
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<!-- Judul utama halaman -->
+<h3>@ViewData["Title"]</h3>
+
+<div>
+    <!-- Penjelasan langkah-langkah konfigurasi 2FA -->
+    <p>To use an authenticator app go through the following steps:</p>
+
+    <!-- Daftar langkah dalam bentuk ordered list -->
+    <ol class="list">
+
+        <!-- Langkah 1: Instal aplikasi authenticator -->
+        <li>
+            <p>
+                Download a two-factor authenticator app like Microsoft Authenticator for
+                <a href="https://go.microsoft.com/fwlink/?Linkid=825072">Android</a> and
+                <a href="https://go.microsoft.com/fwlink/?Linkid=825073">iOS</a>,
+                or Google Authenticator for
+                <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&amp;hl=en">Android</a> and
+                <a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8">iOS</a>.
+            </p>
+        </li>
+
+        <!-- Langkah 2: Scan QR Code atau masukkan kunci manual -->
+        <li>
+            <p>
+                Scan the QR Code or enter this key <kbd>@Model.SharedKey</kbd>
+                into your two factor authenticator app.
+                <!-- Penjelasan tambahan -->
+                Spaces and casing do not matter.
+            </p>
+
+            <!-- Catatan tambahan untuk belajar menghasilkan QR Code -->
+            <div class="alert alert-info">
+                Learn how to <a href="https://go.microsoft.com/fwlink/?Linkid=852423">enable QR code generation</a>.
+            </div>
+
+            <!-- Tempat QR Code akan dirender oleh JavaScript -->
+            <div id="qrCode"></div>
+
+            <!-- Data URL QR Code, akan digunakan oleh JavaScript untuk membuat QR Code -->
+            <div id="qrCodeData" data-url="@Model.AuthenticatorUri"></div>
+        </li>
+
+        <!-- Langkah 3: Input kode verifikasi -->
+        <li>
+            <p>
+                Once you have scanned the QR code or input the key above,
+                your two factor authentication app will provide you with a unique code.
+                Enter the code in the confirmation box below.
+            </p>
+
+            <!-- Form untuk input kode verifikasi dari aplikasi authenticator -->
+            <div class="row">
+                <div class="col-md-6">
+
+                    <!-- Form akan mengirim POST ke server -->
+                    <form id="send-code" method="post">
+
+                        <!-- Input kode verifikasi -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Code" class="form-control"
+                                   autocomplete="off"
+                                   placeholder="Please enter the code." />
+
+                            <label asp-for="Input.Code" class="control-label form-label">
+                                Verification Code
+                            </label>
+
+                            <!-- Pesan validasi jika kode salah -->
+                            <span asp-validation-for="Input.Code" class="text-danger"></span>
+                        </div>
+
+                        <!-- Tombol kirim -->
+                        <button type="submit" class="w-100 btn btn-lg btn-primary">
+                            Verify
+                        </button>
+
+                        <!-- Validasi umum jika form gagal diproses -->
+                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                    </form>
+                </div>
+            </div>
+        </li>
+    </ol>
+</div>
+
+<!-- Menyisipkan skrip validasi ASP.NET -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

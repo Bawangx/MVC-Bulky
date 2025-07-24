@@ -1,0 +1,13 @@
+﻿@page
+@model AccessDeniedModel
+@{
+    // Set judul halaman
+    ViewData["Title"] = "Access denied";
+}
+
+<header>
+    <!-- Judul halaman dengan teks berwarna merah untuk menandakan error/penolakan -->
+    <h1 class="text-danger">@ViewData["Title"]</h1>
+    <!-- Pesan yang memberi tahu pengguna bahwa akses ditolak -->
+    <p class="text-danger">You do not have access to this resource.</p>
+</header>

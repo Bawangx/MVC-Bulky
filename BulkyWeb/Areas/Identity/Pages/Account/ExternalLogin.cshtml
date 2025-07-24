@@ -1,0 +1,85 @@
+﻿@page
+@model ExternalLoginModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<!-- Judul halaman dinamis berdasarkan provider external login -->
+<h2 id="external-login-title">Associate your @Model.ProviderDisplayName account.</h2>
+<hr />
+
+<!-- Informasi bahwa user sudah login via provider external -->
+<p id="external-login-description" class="text-info">
+    You've successfully authenticated with <strong>@Model.ProviderDisplayName</strong>.
+    Please enter an email address for this site below and click the Register button to finish
+    logging in.
+</p>
+
+<div class="row">
+    <div class="col-md-4">
+        <!-- Form untuk input data tambahan user saat registrasi external login -->
+        <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <!-- Validasi error summary -->
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+            <!-- Input email -->
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Email" class="form-control" autocomplete="email" placeholder="Please enter your email." />
+                <label asp-for="Input.Email" class="form-label"></label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+
+            <!-- Input nama lengkap -->
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Name" class="form-control" autocomplete="name" placeholder="Please enter your name." />
+                <label asp-for="Input.Name" class="form-label"></label>
+                <span asp-validation-for="Input.Name" class="text-danger"></span>
+            </div>
+
+            <!-- Input nomor telepon -->
+            <div class="form-floating mb-3">
+                <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="tel" placeholder="Please enter your phone number." />
+                <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <!-- Input alamat jalan -->
+            <div class="form-floating mb-3">
+                <input asp-for="Input.StreetAddress" class="form-control" autocomplete="street-address" placeholder="Please enter your street address." />
+                <label asp-for="Input.StreetAddress" class="form-label"></label>
+                <span asp-validation-for="Input.StreetAddress" class="text-danger"></span>
+            </div>
+
+            <!-- Input kota -->
+            <div class="form-floating mb-3">
+                <input asp-for="Input.City" class="form-control" autocomplete="address-level2" placeholder="Please enter your city." />
+                <label asp-for="Input.City" class="form-label"></label>
+                <span asp-validation-for="Input.City" class="text-danger"></span>
+            </div>
+
+            <!-- Input provinsi/state -->
+            <div class="form-floating mb-3">
+                <input asp-for="Input.State" class="form-control" autocomplete="address-level1" placeholder="Please enter your state." />
+                <label asp-for="Input.State" class="form-label"></label>
+                <span asp-validation-for="Input.State" class="text-danger"></span>
+            </div>
+
+            <!-- Input kode pos -->
+            <div class="form-floating mb-3">
+                <input asp-for="Input.PostalCode" class="form-control" autocomplete="postal-code" placeholder="Please enter your postal code." />
+                <label asp-for="Input.PostalCode" class="form-label"></label>
+                <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
+            </div>
+
+            <!-- Tombol submit untuk registrasi -->
+            <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Partial view untuk validasi client side -->
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,45 @@
+﻿@page
+@model LoginWithRecoveryCodeModel
+@{
+    // Set judul halaman yang akan tampil di <h1>
+    ViewData["Title"] = "Recovery code verification";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<p>
+    You have requested to log in with a recovery code. This login will not be remembered until you provide
+    an authenticator app code at log in or disable 2FA and log in again.
+</p>
+
+<div class="row">
+    <div class="col-md-4">
+        <!-- Form untuk input recovery code, method POST mengirim data ke server -->
+        <form method="post">
+            <!-- Tampilkan ringkasan error validasi model -->
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+            <!-- Input recovery code dengan label floating -->
+            <div class="form-floating mb-3">
+                <!-- Binding input ke property Input.RecoveryCode di model -->
+                <input asp-for="Input.RecoveryCode"
+                       class="form-control"
+                       autocomplete="off"
+                       placeholder="RecoveryCode" />
+                <!-- Label untuk input recovery code -->
+                <label asp-for="Input.RecoveryCode" class="form-label"></label>
+                <!-- Tampilkan error validasi spesifik untuk RecoveryCode -->
+                <span asp-validation-for="Input.RecoveryCode" class="text-danger"></span>
+            </div>
+
+            <!-- Tombol submit untuk kirim form -->
+            <button type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Partial view untuk mengaktifkan validasi client-side dengan jQuery Validation -->
+    <partial name="_ValidationScriptsPartial" />
+}

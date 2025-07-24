@@ -1,0 +1,57 @@
+﻿@model Category
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-warning bg-gradient m-lg-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <!-- Judul halaman edit kategori -->
+                <h2 class="text-white py-2">Edit Category</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body p-4">
+        <!-- Form untuk update data kategori -->
+        <form method="post">
+            <!-- Id kategori disembunyikan agar tetap dikirim ke server -->
+            <input asp-for="Id" type="hidden" />
+
+            <div class="border p-3">
+                <!-- Menampilkan ringkasan validasi jika ada error -->
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <!-- Input untuk nama kategori -->
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="Name" class="form-control border-0 shadow" placeholder=" " />
+                    <label asp-for="Name"></label>
+                    <span asp-validation-for="Name" class="text-danger"></span> <!-- Validasi khusus field -->
+                </div>
+
+                <!-- Input untuk urutan tampil kategori -->
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="DisplayOrder" class="form-control border-0 shadow" placeholder=" " />
+                    <label asp-for="DisplayOrder"></label>
+                    <span asp-validation-for="DisplayOrder" class="text-danger"></span> <!-- Validasi khusus field -->
+                </div>
+
+                <!-- Tombol aksi -->
+                <div class="row pt-3">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-warning form-control text-white">Update</button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <!-- Link untuk kembali ke daftar kategori -->
+                        <a asp-controller="Category" asp-action="Index" class="btn btn-outline-secondary border form-control">
+                            Back To List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Partial yang berisi skrip validasi client side -->
+    <partial name="_ValidationScriptsPartial" />
+}

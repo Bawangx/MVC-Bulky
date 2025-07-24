@@ -1,0 +1,37 @@
+﻿@page
+@model PersonalDataModel
+@{
+    // Judul halaman dan navigasi aktif untuk highlight menu
+    ViewData["Title"] = "Personal Data";
+    ViewData["ActivePage"] = ManageNavPages.PersonalData;
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <p>
+            Your account contains personal data that you have given us. This page allows you to download or delete that data.
+        </p>
+        <p>
+            <strong>
+                Deleting this data will permanently remove your account, and this cannot be recovered.
+            </strong>
+        </p>
+
+        <!-- Form untuk mengirim request POST ke halaman DownloadPersonalData -->
+        <form id="download-data" asp-page="DownloadPersonalData" method="post">
+            <button class="btn btn-primary" type="submit">Download</button>
+        </form>
+
+        <!-- Link tombol untuk mengarahkan ke halaman DeletePersonalData -->
+        <p>
+            <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger">Delete</a>
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Partial view untuk validasi form, jika diperlukan -->
+    <partial name="_ValidationScriptsPartial" />
+}
