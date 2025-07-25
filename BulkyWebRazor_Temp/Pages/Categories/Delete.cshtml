@@ -2,26 +2,33 @@
 @model BulkyWebRazor_Temp.Pages.Categories.DeleteModel
 
 <form method="post">
-    <input asp-for="Category.Id" hidden />
+    @* Menyimpan ID category secara tersembunyi agar dapat di-submit ke server saat delete *@
+    <input asp-for="Category.Id" type="hidden" />
+
     <div class="row p-3 mt-4">
         <div class="row pb-2">
             <h2 class="text-primary">Delete Category</h2>
             <hr />
         </div>
-        @* <div asp-validation-summary="All"></div> *@
+
+        @* Field ini hanya menampilkan data category, input di-disable agar tidak bisa diubah saat delete *@
         <div class="mb-3 row p-1">
             <label asp-for="Category.Name" class="p-0"></label>
             <input asp-for="Category.Name" disabled class="form-control" />
         </div>
+
         <div class="mb-3 row p-1">
             <label asp-for="Category.DisplayOrder" class="p-0"></label>
             <input asp-for="Category.DisplayOrder" disabled class="form-control" />
         </div>
+
         <div class="row">
             <div class="col-6 col-md-3">
+                @* Tombol untuk mengirim form dan memicu aksi delete *@
                 <button type="submit" class="btn btn-danger form-control">Delete</button>
             </div>
             <div class="col-6 col-md-3">
+                @* Link untuk kembali ke halaman daftar tanpa melakukan aksi delete *@
                 <a asp-page="/categories/index" class="btn btn-outline-secondary border form-control">
                     Back To List
                 </a>

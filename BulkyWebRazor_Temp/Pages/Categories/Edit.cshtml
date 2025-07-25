@@ -2,28 +2,38 @@
 @model BulkyWebRazor_Temp.Pages.Categories.EditModel
 
 <form method="post">
-    <input asp-for="Category.Id" hidden />
+    @* Hidden input untuk menyimpan Id kategori agar bisa di-submit saat update *@
+    <input asp-for="Category.Id" type="hidden" />
+
     <div class="row p-3 mt-4">
         <div class="row pb-2">
             <h2 class="text-primary">Edit Category</h2>
             <hr />
         </div>
-        @* <div asp-validation-summary="All"></div> *@
+
+        @* Form input untuk nama kategori *@
         <div class="mb-3 row p-1">
             <label asp-for="Category.Name" class="p-0"></label>
             <input asp-for="Category.Name" class="form-control" />
+            @* Menampilkan pesan validasi jika ada error pada field ini *@
             <span asp-validation-for="Category.Name" class="text-danger"></span>
         </div>
+
+        @* Form input untuk display order kategori *@
         <div class="mb-3 row p-1">
             <label asp-for="Category.DisplayOrder" class="p-0"></label>
             <input asp-for="Category.DisplayOrder" class="form-control" />
+            @* Menampilkan pesan validasi jika ada error pada field ini *@
             <span asp-validation-for="Category.DisplayOrder" class="text-danger"></span>
         </div>
+
         <div class="row">
             <div class="col-6 col-md-3">
+                @* Tombol submit untuk mengirim form dan update data kategori *@
                 <button type="submit" class="btn btn-primary form-control">Update</button>
             </div>
             <div class="col-6 col-md-3">
+                @* Link untuk kembali ke daftar kategori tanpa melakukan update *@
                 <a asp-page="/categories/index" class="btn btn-outline-secondary border form-control">
                     Back To List
                 </a>
@@ -31,8 +41,8 @@
         </div>
     </div>
 </form>
+
 @section Scripts {
-    @{
-        <partial name="_ValidationScriptsPartial" />
-    }
+    @* Partial view untuk memuat skrip validasi client-side *@
+    <partial name="_ValidationScriptsPartial" />
 }

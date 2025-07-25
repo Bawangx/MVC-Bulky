@@ -1,15 +1,20 @@
 ﻿using Bulky.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+
 namespace Bulky.DataAccess.Data
 {
+    /// <summary>
+    /// Context untuk Entity Framework yang mengatur koneksi ke database dan pemetaan tabel.
+    /// Turunan dari IdentityDbContext untuk support Identity (user management).
+    /// </summary>
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext>options) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            
         }
+
+        // DbSet mewakili tabel-tabel di database
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Company> Companies { get; set; }
@@ -18,26 +23,38 @@ namespace Bulky.DataAccess.Data
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<OrderHeader> OrderHeaders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+
+        /// <summary>
+        /// Method ini dipanggil saat model database dibuat.
+        /// Di sini kita bisa menambahkan data awal (seed data) agar database terisi saat pertama dibuat.
+        /// </summary>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Pastikan memanggil base agar konfigurasi Identity tetap berjalan
             base.OnModelCreating(modelBuilder);
+
+            // Seed data untuk Category
             modelBuilder.Entity<Category>().HasData(
-                new Category { Id = 1, Name = "Action", DisplayOrder = 1},
+                new Category { Id = 1, Name = "Action", DisplayOrder = 1 },
                 new Category { Id = 2, Name = "Sci-Fi", DisplayOrder = 2 },
                 new Category { Id = 3, Name = "History", DisplayOrder = 3 }
-                );
+            );
+
+            // Seed data untuk Company
             modelBuilder.Entity<Company>().HasData(
                 new Company { Id = 1, Name = "Tech Solution", StreetAddress = "123 Tech St", City = "Tech City", PostalCode = "12000", State = "IL", PhoneNumber = "10501515" },
                 new Company { Id = 2, Name = "Tech Solution", StreetAddress = "124 Zhenwu St", City = "Zhenwu City", PostalCode = "11000", State = "EL", PhoneNumber = "10501515" },
                 new Company { Id = 3, Name = "Tech Solution", StreetAddress = "125 World St", City = "World City", PostalCode = "13000", State = "AL", PhoneNumber = "10501515" }
-                );
+            );
+
+            // Seed data untuk Product
             modelBuilder.Entity<Product>().HasData(
                 new Product
                 {
                     Id = 1,
                     Title = "Fortune of Time",
                     Author = "Billy Spark",
-                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
+                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt.",
                     ISBN = "SWD9999001",
                     ListPrice = 99,
                     Price = 90,
@@ -50,7 +67,7 @@ namespace Bulky.DataAccess.Data
                     Id = 2,
                     Title = "Dark Skies",
                     Author = "Nancy Hoover",
-                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
+                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt.",
                     ISBN = "CAW777777701",
                     ListPrice = 40,
                     Price = 30,
@@ -63,7 +80,7 @@ namespace Bulky.DataAccess.Data
                     Id = 3,
                     Title = "Vanish in the Sunset",
                     Author = "Julian Button",
-                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
+                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt.",
                     ISBN = "RITO5555501",
                     ListPrice = 55,
                     Price = 50,
@@ -76,7 +93,7 @@ namespace Bulky.DataAccess.Data
                     Id = 4,
                     Title = "Cotton Candy",
                     Author = "Abby Muscles",
-                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
+                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt.",
                     ISBN = "WS3333333301",
                     ListPrice = 70,
                     Price = 65,
@@ -89,7 +106,7 @@ namespace Bulky.DataAccess.Data
                     Id = 5,
                     Title = "Rock in the Ocean",
                     Author = "Ron Parker",
-                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
+                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt.",
                     ISBN = "SOTJ1111111101",
                     ListPrice = 30,
                     Price = 27,
@@ -102,7 +119,7 @@ namespace Bulky.DataAccess.Data
                     Id = 6,
                     Title = "Leaves and Wonders",
                     Author = "Laura Phantom",
-                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
+                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt.",
                     ISBN = "FOT000000001",
                     ListPrice = 25,
                     Price = 23,
@@ -110,7 +127,7 @@ namespace Bulky.DataAccess.Data
                     Price100 = 20,
                     CategoryId = 3
                 }
-                );
+            );
         }
     }
 }

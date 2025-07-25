@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bulky.Models.ViewModels
 {
+    // ViewModel untuk manajemen Role pengguna (ApplicationUser)
     public class RoleManagmentVM
     {
-        public ApplicationUser ApplicationUser { get; set; } // User yang akan dikelola role-nya
-        public IEnumerable<SelectListItem> RoleList { get; set; } // Daftar nama role yang dimiliki user
-        public IEnumerable<SelectListItem> CompanyList { get; set; } // Semua role yang tersedia di sistem
+        // Objek ApplicationUser yang sedang dikelola rolenya
+        public ApplicationUser ApplicationUser { get; set; }
+
+        // Daftar Role yang dapat dipilih untuk pengguna ini
+        // Digunakan untuk dropdown/select di view
+        public IEnumerable<SelectListItem> RoleList { get; set; }
+
+        // Daftar Company yang bisa dipilih, biasanya untuk mengaitkan user dengan company
+        public IEnumerable<SelectListItem> CompanyList { get; set; }
     }
 }

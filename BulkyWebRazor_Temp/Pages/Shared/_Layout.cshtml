@@ -2,29 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
+    <!-- Membuat halaman responsif pada berbagai ukuran layar -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Title halaman di tab browser, mengambil data dari ViewData -->
     <title>@ViewData["Title"] - BulkyWebRazor_Temp</title>
+
+    <!-- Memuat stylesheet Bootstrap (framework CSS populer) -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Memuat stylesheet custom dari folder css dengan versi untuk cache busting -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <!-- Stylesheet khusus project BulkyWebRazor_Temp -->
     <link rel="stylesheet" href="~/BulkyWebRazor_Temp.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
+        <!-- Navbar (menu navigasi atas halaman) menggunakan Bootstrap -->
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
+                <!-- Logo atau judul aplikasi, menuju halaman Index -->
                 <a class="navbar-brand" asp-area="" asp-page="/Index">BulkyWebRazor_Temp</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+
+                <!-- Tombol toggle untuk navbar di layar kecil (responsive) -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
+                <!-- Konten navbar yang bisa di-expand dan collapse -->
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        <!-- Menu navigasi Home -->
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                         </li>
+                        <!-- Menu navigasi Category -->
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/categories/index">Category</a>
                         </li>
+                        <!-- Menu navigasi Privacy -->
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
@@ -33,22 +51,32 @@
             </div>
         </nav>
     </header>
+
+    <!-- Kontainer utama untuk konten halaman -->
     <div class="container">
         <main role="main" class="pb-3">
+            <!-- Tempat konten halaman yang akan di-render -->
             @RenderBody()
         </main>
     </div>
 
+    <!-- Footer sederhana -->
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2025 - BulkyWebRazor_Temp - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
 
+    <!-- Memuat jQuery, diperlukan Bootstrap JS -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap JS bundle -->
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script custom -->
     <script src="~/js/site.js" asp-append-version="true"></script>
 
+    <!-- Tempat untuk menambahkan script khusus di halaman yang menggunakan layout ini -->
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

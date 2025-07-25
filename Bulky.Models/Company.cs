@@ -1,22 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Bulky.Models
 {
+    // Model yang merepresentasikan data perusahaan (Company)
     public class Company
     {
-        public int Id { get; set; }
-        [Required]
-        public string Name { get; set; }
-        public string? StreetAddress { get; set; }
-        public string? City { get; set; }
-        public string? State { get; set; }
-        public string? PostalCode { get; set; }
-        public string? PhoneNumber { get; set; }
+        public int Id { get; set; }  // Primary key, otomatis unik dan untuk identifikasi data company
+
+        [Required(ErrorMessage = "Name wajib diisi")]
+        public string Name { get; set; }  // Nama perusahaan, wajib diisi
+
+        public string? StreetAddress { get; set; }  // Alamat jalan, opsional (boleh kosong)
+
+        public string? City { get; set; }  // Kota, opsional
+
+        public string? State { get; set; }  // Provinsi/negara bagian, opsional
+
+        public string? PostalCode { get; set; }  // Kode pos, opsional
+
+        public string? PhoneNumber { get; set; }  // Nomor telepon, opsional
     }
 }

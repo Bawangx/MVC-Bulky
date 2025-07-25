@@ -1,48 +1,49 @@
 ﻿@page
 @model BulkyWebRazor_Temp.Pages.Categories.IndexModel
 
-        <div class="container">
-            <div class="row pt-4">
-                <div class="col-6">
-                    <h2 class="text-primary">Category List</h2>
-                </div>
-                <div class="col-6 text-end">
-                    <a asp-page="/categories/create" class="btn btn-primary">
-                        <i class="bi bi-plus-circle"></i> Create New Category
-                    </a>
-                </div>
-            </div>
-
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>
-                            Category Name
-                        </th>
-                        <th>
-                            Display Order
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var obj in Model.CategoryList.OrderBy(u => u.DisplayOrder))
-                    {
-                        <tr>
-                            <td>@obj.Name</td>
-                            <td>@obj.DisplayOrder</td>
-                            <td>
-                                <div class="w-75 btn-group" role="group">
-                                    <a asp-page="/categories/edit" asp-route-id="@obj.Id" class="btn btn-primary mx-2">
-                                        <i class="bi bi-pencil-square"></i>Edit
-                                    </a>
-                                    <a asp-page="/categories/delete" asp-route-id="@obj.Id" class="btn btn-danger mx-2">
-                                        <i class="bi bi-trash-fill"></i>Delete
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+<div class="container">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Category List</h2>
         </div>
-</h1>
+        <div class="col-6 text-end">
+            @* Tombol untuk menuju halaman create kategori baru *@
+            <a asp-page="/categories/create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Create New Category
+            </a>
+        </div>
+    </div>
+
+    @* Tabel menampilkan daftar kategori dengan kolom nama dan display order *@
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Category Name</th>
+                <th>Display Order</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @* Looping menampilkan setiap kategori yang sudah diurutkan berdasarkan DisplayOrder *@
+            @foreach (var obj in Model.CategoryList.OrderBy(u => u.DisplayOrder))
+            {
+                <tr>
+                    <td>@obj.Name</td>
+                    <td>@obj.DisplayOrder</td>
+                    <td>
+                        <div class="w-75 btn-group" role="group">
+                            @* Link untuk edit kategori, mengoper Id kategori sebagai route parameter *@
+                            <a asp-page="/categories/edit" asp-route-id="@obj.Id" class="btn btn-primary mx-2">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            @* Link untuk delete kategori, mengoper Id kategori sebagai route parameter *@
+                            <a asp-page="/categories/delete" asp-route-id="@obj.Id" class="btn btn-danger mx-2">
+                                <i class="bi bi-trash-fill"></i> Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,16 +1,28 @@
-﻿@if (TempData["success"] != null)
+﻿@* 
+    Notifikasi Toastr: Menampilkan alert pop-up berbasis nilai TempData 
+    - "success" untuk pesan sukses (warna hijau)
+    - "error" untuk pesan gagal (warna merah)
+    - Menggunakan library Toastr dan jQuery
+*@
+
+@* Cek apakah ada pesan sukses di TempData *@
+@if (TempData["success"] != null)
 {
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script> @* jQuery diperlukan oleh Toastr *@
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script> @* CDN Toastr *@
     <script type="text/javascript">
+        // Tampilkan notifikasi sukses
         toastr.success('@TempData["success"]');
     </script>
 }
+
+@* Cek apakah ada pesan error di TempData *@
 @if (TempData["error"] != null)
 {
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script type="text/javascript">
-        toastr.error('@TempData["success"]');
+        // Tampilkan notifikasi error
+        toastr.error('@TempData["error"]');
     </script>
 }

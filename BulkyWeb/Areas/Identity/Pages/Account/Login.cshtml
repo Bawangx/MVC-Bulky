@@ -1,7 +1,9 @@
 ﻿@page
 @model LoginModel
 
+<!-- Kartu utama form login -->
 <div class="card shadow border-0 mt-4">
+    <!-- Bagian Header -->
     <div class="card-header bg-secondary bg-gradient ml-0 py-4">
         <div class="row">
             <div class="col-12 text-center">
@@ -9,34 +11,49 @@
             </div>
         </div>
     </div>
+
+    <!-- Bagian Isi -->
     <div class="card-body p-4">
         <div class="row">
+            <!-- Form Login Local (Email + Password) -->
             <div class="col-md-12">
                 <section>
                     <form id="account" method="post">
                         <h3 class="border-bottom pb-3 mb-4 text-secondary text-center">
                             Use a local account to log in.
                         </h3>
+
+                        <!-- Validasi Error -->
                         <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                        <!-- Input Email -->
                         <div class="form-floating mb-3">
                             <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
                             <label asp-for="Input.Email" class="form-label">Email</label>
                             <span asp-validation-for="Input.Email" class="text-danger"></span>
                         </div>
+
+                        <!-- Input Password -->
                         <div class="form-floating mb-3">
                             <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
                             <label asp-for="Input.Password" class="form-label">Password</label>
                             <span asp-validation-for="Input.Password" class="text-danger"></span>
                         </div>
+
+                        <!-- Remember Me -->
                         <div class="checkbox mb-3">
                             <label asp-for="Input.RememberMe" class="form-label">
                                 <input class="form-check-input" asp-for="Input.RememberMe" />
                                 @Html.DisplayNameFor(m => m.Input.RememberMe)
                             </label>
                         </div>
+
+                        <!-- Tombol Login -->
                         <div>
                             <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
                         </div>
+
+                        <!-- Link tambahan (Lupa Password, Register, Kirim ulang konfirmasi) -->
                         <div class="d-flex justify-content-between pt-2">
                             <p>
                                 <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
@@ -51,35 +68,43 @@
                     </form>
                 </section>
             </div>
+
+            <!-- Bagian Login dengan External Provider (Google, Facebook, dsb) -->
             <div class="col-md-12 p-3 text-center">
                 <section>
                     <p class="divider-text d-flex pt-3">or</p>
 
-                    @{
-                        if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                        {
+                    @* Jika belum ada eksternal login terkonfigurasi *@
+                    @if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                    {
+                        <div>
+                            <p>
+                                There are no external authentication services configured.
+                                See this
+                                <a href="https://go.microsoft.com/fwlink/?LinkID=532715" target="_blank">
+                                    article
+                                </a>
+                                about setting up this ASP.NET application to support logging in via external services.
+                            </p>
+                        </div>
+                    }
+                    else
+                    {
+                        @* Jika eksternal login tersedia (Google, Facebook, dst.) *@
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
                             <div>
                                 <p>
-                                    There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
-                                        article
-                                        about setting up this ASP.NET application to support logging in via external services
-                                    </a>.
+                                    @foreach (var provider in Model.ExternalLogins!)
+                                    {
+                                        <button type="submit" class="btn btn-primary m-1"
+                                                name="provider" value="@provider.Name"
+                                                title="Log in using your @provider.DisplayName account">
+                                            @provider.DisplayName
+                                        </button>
+                                    }
                                 </p>
                             </div>
-                        }
-                        else
-                        {
-                            <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                                <div>
-                                    <p>
-                                        @foreach (var provider in Model.ExternalLogins!)
-                                        {
-                                            <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                        }
-                                    </p>
-                                </div>
-                            </form>
-                        }
+                        </form>
                     }
                 </section>
             </div>
@@ -87,7 +112,7 @@
     </div>
 </div>
 
-
+<!-- Scripts untuk validasi client-side -->
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

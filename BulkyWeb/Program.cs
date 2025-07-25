@@ -1,3 +1,5 @@
+﻿// ─────────────────────────────────────────────────────────────────────────────
+// 📦 Using directive (import library)
 using Bulky.DataAccess.DbInitializer;
 using Bulky.DataAccess.Repository;
 using Bulky.DataAccess.Repository.IRepository;
@@ -11,17 +13,21 @@ using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Tambahkan DbContext untuk akses database
+#region 1️⃣ KONFIGURASI SERVICE
+
+// ✅ 1. Konfigurasi koneksi database (Entity Framework)
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// 2. Setup ASP.NET Core Identity untuk user management dan autentikasi
+// ✅ 2. Konfigurasi Identity (untuk login/register user)
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-    options.SignIn.RequireConfirmedAccount = false) // Tidak pakai konfirmasi email dulu
-    .AddEntityFrameworkStores<ApplicationDbContext>() // Simpan data user di EF Core
-    .AddDefaultTokenProviders(); // Token untuk reset password, email confirmation, dll.
+{
+    options.SignIn.RequireConfirmedAccount = false; // Tidak perlu konfirmasi email
+})
+.AddEntityFrameworkStores<ApplicationDbContext>() // Gunakan database EF Core
+.AddDefaultTokenProviders();                      // Untuk reset password, dll
 
-// 3. Konfigurasi path login, logout, dan akses ditolak
+// ✅ 3. Konfigurasi path login/logout/access denied
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Identity/Account/Login";
@@ -29,70 +35,88 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
 });
 
-// 4. Tambahkan Facebook Authentication
-builder.Services.AddAuthentication().AddFacebook(option =>
+// ✅ 4. Konfigurasi Facebook Login
+builder.Services.AddAuthentication().AddFacebook(options =>
 {
-    option.AppId = "1141841511058275";
-    option.AppSecret = "c25b1216a10ac9d308ec5523b50aba35";
+    options.AppId = "1141841511058275";               // Ganti dengan App ID Facebook kamu
+    options.AppSecret = "c25b1216a10ac9d308ec5523b50aba35"; // Ganti dengan App Secret
 });
 
-// 5. Tambahkan session dan cache untuk menyimpan data sementara di server
-builder.Services.AddDistributedMemoryCache();
+// ✅ 5. Konfigurasi Session (menyimpan data di server sementara)
+builder.Services.AddDistributedMemoryCache(); // Cache memory lokal
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(100); // Waktu timeout session
-    options.Cookie.HttpOnly = true;                   // Cookie hanya bisa diakses via HTTP (bukan JS)
-    options.Cookie.IsEssential = true;                 // Cookie wajib walau user menolak tracking
+    options.IdleTimeout = TimeSpan.FromMinutes(100); // Expired setelah 100 menit
+    options.Cookie.HttpOnly = true;                  // Cookie hanya bisa dibaca server
+    options.Cookie.IsEssential = true;               // Cookie tetap aktif meskipun user menolak tracking
 });
 
-// 6. Daftarkan service custom (dependency injection)
-builder.Services.AddScoped<IDbInitializer, DbInitializer>(); // Service untuk inisialisasi database
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();       // Unit of Work pattern untuk repository
-builder.Services.AddScoped<IEmailSender, EmailSender>();     // Service pengiriman email
+// ✅ 6. Register Service untuk Dependency Injection
+builder.Services.AddScoped<IDbInitializer, DbInitializer>(); // Inisialisasi data awal DB
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();       // Pattern repository gabungan
+builder.Services.AddScoped<IEmailSender, EmailSender>();     // Pengirim email (reset password, dll)
 
-// 7. Tambahkan dukungan MVC dan Razor Pages
-builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages();
+// ✅ 7. MVC dan Razor Pages
+builder.Services.AddControllersWithViews(); // Untuk routing controller
+builder.Services.AddRazorPages();           // Untuk halaman Razor Pages
 
+#endregion
+
+// Bangun app ASP.NET Core
 var app = builder.Build();
 
-// 8. Konfigurasi middleware pipeline
+#region 2️⃣ KONFIGURASI MIDDLEWARE
 
-// Jika bukan development, pakai halaman error umum dan HSTS (keamanan HTTPS)
+// ✅ 8. Error handling & security HTTPS
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
+    app.UseExceptionHandler("/Home/Error"); // Redirect ke halaman error friendly
+    app.UseHsts();                          // Tambahkan HTTP Strict Transport Security
 }
 
-app.UseHttpsRedirection();  // Redirect HTTP ke HTTPS
-app.UseStaticFiles();       // Serve file statis seperti CSS, JS, gambar
+// ✅ 9. Middleware dasar
+app.UseHttpsRedirection();  // Paksa HTTPS
+app.UseStaticFiles();       // Load file CSS, JS, gambar, dll
 
-// Konfigurasi Stripe API Key dari appsettings.json
-StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe.SecretKey").Get<string>();
+// ✅ 10. Stripe Configuration dari appsettings.json
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
 
-app.UseRouting();           // Aktifkan routing URL
+// ✅ 11. Middleware Routing
+app.UseRouting();           // Aktifkan sistem routing
 
-app.UseAuthentication();    // Aktifkan sistem autentikasi
-app.UseAuthorization();     // Aktifkan sistem otorisasi (akses)
-app.UseSession();           // Aktifkan session server
+// ✅ 12. Middleware Autentikasi dan Otorisasi
+app.UseAuthentication();    // Proses login & validasi identitas
+app.UseAuthorization();     // Cek apakah user punya akses
 
-SeedDatabase();             // Jalankan inisialisasi database (seed data)
+// ✅ 13. Aktifkan Session Server
+app.UseSession();           // Simpan data user sementara (cart, userId, dll)
 
-// Mapping Razor Pages dan route default MVC
-app.MapRazorPages();
+// ✅ 14. Seed Database (masukkan data awal ke DB)
+SeedDatabase();
+
+#endregion
+
+#region 3️⃣ KONFIGURASI ENDPOINT
+
+// ✅ 15. Routing Razor Page dan MVC Controller
+app.MapRazorPages(); // Untuk halaman-halaman /Identity
 app.MapControllerRoute(
     name: "default",
-    pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}"); // Default route
 
-app.Run();  // Jalankan aplikasi
+#endregion
 
-// Fungsi untuk menjalankan seeding database menggunakan service IDbInitializer
+// ✅ 16. Jalankan Aplikasi
+app.Run();
+
+#region 🔁 FUNGSI SEED DATABASE
+
+// Fungsi untuk inisialisasi database
 void SeedDatabase()
 {
-    using (var scope = app.Services.CreateScope())
-    {
-        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-        dbInitializer.Initialize();
-    }
+    using var scope = app.Services.CreateScope(); // Buat scope untuk akses service
+    var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>(); // Ambil service
+    dbInitializer.Initialize(); // Jalankan proses seeding
 }
+
+#endregion

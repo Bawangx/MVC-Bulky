@@ -1,14 +1,12 @@
 ﻿using Bulky.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bulky.DataAccess.Repository.IRepository
 {
+    // Interface untuk operasi pada entitas ProductImage
+    // Mewarisi operasi dasar CRUD dari IRepository<ProductImage>
     public interface IProductImageRepository : IRepository<ProductImage>
     {
+        // Method khusus untuk update ProductImage
         void Update(ProductImage obj);
     }
 }

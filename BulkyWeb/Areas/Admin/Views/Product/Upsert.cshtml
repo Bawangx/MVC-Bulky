@@ -2,11 +2,12 @@
 
 <!-- Kartu utama untuk Create/Update Product -->
 <div class="card shadow border-0 my-4">
-    <!-- Header -->
+
+    <!-- Header kartu -->
     <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
-                <!-- Judul halaman berubah sesuai operasi -->
+                <!-- Judul halaman dinamis, menyesuaikan apakah Create atau Update -->
                 <h2 class="text-white py-2">
                     @(Model.Product.Id != 0 ? "Update" : "Create") Product
                 </h2>
@@ -16,14 +17,14 @@
 
     <!-- Body form -->
     <div class="card-body p-4">
-        <!-- Form untuk submit data produk -->
+        <!-- Form submit data produk, enctype multipart agar bisa upload file -->
         <form method="post" class="row" enctype="multipart/form-data">
-            <!-- Menyimpan Id dan ImageUrl sebagai input tersembunyi -->
+            <!-- Input tersembunyi untuk menyimpan Id produk -->
             <input asp-for="Product.Id" hidden />
-            @* <input asp-for="Product.ImageUrl" hidden /> *@
 
             <div class="row">
-                <!-- Form input data produk -->
+
+                <!-- Bagian input form -->
                 <div class="col-10">
                     <div class="border p-3">
 
@@ -38,6 +39,7 @@
                         <div class="py-2 col-12">
                             <label asp-for="Product.Description"></label>
                             <textarea asp-for="Product.Description" class="form-control border-0 shadow"></textarea>
+                            <span asp-validation-for="Product.Description" class="text-danger"></span>
                         </div>
 
                         <!-- ISBN -->
@@ -82,7 +84,7 @@
                             <span asp-validation-for="Product.Price100" class="text-danger"></span>
                         </div>
 
-                        <!-- Pilihan Kategori Produk -->
+                        <!-- Dropdown kategori produk -->
                         <div class="form-floating py-2 col-12">
                             <select asp-for="Product.CategoryId" asp-items="Model.CategoryList" class="form-select border-0 shadow">
                                 <option disabled selected>--Select Category--</option>
@@ -91,16 +93,16 @@
                             <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
                         </div>
 
-                        <!-- Upload gambar produk -->
+                        <!-- Upload gambar produk, bisa multiple -->
                         <div class="form-floating py-2 col-12">
                             <input type="file" name="files" class="form-control border-0 shadow" multiple />
                             <label asp-for="Product.ProductImages" class="ms-2"></label>
                         </div>
 
-                        <!-- Tombol aksi -->
+                        <!-- Tombol Submit dan Back -->
                         <div class="row pt-3">
                             <div class="col-6 col-md-3">
-                                <!-- Tampilkan tombol Update atau Create -->
+                                <!-- Tampilkan tombol sesuai operasi -->
                                 @if (Model.Product.Id != 0)
                                 {
                                     <button type="submit" class="btn btn-primary form-control">Update</button>
@@ -120,32 +122,33 @@
                     </div>
                 </div>
 
-                <!-- Preview gambar produk -->
+                <!-- Preview gambar produk yang sudah ada -->
                 <div class="col-2">
                     @if (Model.Product.ProductImages != null)
                     {
                         foreach (var image in Model.Product.ProductImages)
                         {
                             <div class="border p-1 m-2 text-center">
-                            <img src="@image.ImageUrl" width="100%" style="border-radius:5px; border:1px solid #bbb9b9" />
-                            <a asp-action="DeleteImage" class="btn btn-danger" asp-route-imageid="@image.Id">
+                                <img src="@image.ImageUrl" width="100%" style="border-radius:5px; border:1px solid #bbb9b9" />
+                                <!-- Tombol hapus gambar -->
+                                <a asp-action="DeleteImage" class="btn btn-danger" asp-route-imageid="@image.Id">
                                     <i class="bi bi-trash3-fill"></i> Delete
-                            </a>
+                                </a>
                             </div>
                         }
                     }
                 </div>
-            </div>
 
+            </div>
         </form>
     </div>
 </div>
 
-<!-- Menyisipkan TinyMCE (Rich Text Editor) untuk textarea deskripsi -->
+<!-- Sisipkan TinyMCE untuk textarea deskripsi agar rich text -->
 @section Scripts {
     <script>
         tinymce.init({
-            selector: 'textarea',  // Terapkan TinyMCE pada semua textarea
+            selector: 'textarea',  // Terapkan TinyMCE di semua textarea
             plugins: [
                 'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media',
                 'searchreplace', 'table', 'visualblocks', 'wordcount', 'checklist', 'mediaembed', 'casechange',
@@ -157,5 +160,6 @@
             tinycomments_author: 'Author name'
         });
     </script>
+    <!-- Validation scripts untuk ASP.NET Core validation -->
     <partial name="_ValidationScriptsPartial" />
 }

@@ -1,31 +1,42 @@
-using DI_Service_Lifetime.Services;
+using DI_Service_Lifetime.Services; // Namespace berisi definisi service
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Menambahkan layanan (services) ke dalam container Dependency Injection
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<ISingletonGuidService,SingletonGuidService>();
-builder.Services.AddScoped<IScopedGuidService,ScopedGuidService>();
-builder.Services.AddTransient<ITransientGuidService,TransientGuidService>();
+
+// Registrasi service dengan berbagai lifetime:
+
+// Singleton: Instance dibuat sekali, digunakan sepanjang aplikasi berjalan
+builder.Services.AddSingleton<ISingletonGuidService, SingletonGuidService>();
+
+// Scoped: Instance dibuat sekali per request HTTP, dibuang setelah request selesai
+builder.Services.AddScoped<IScopedGuidService, ScopedGuidService>();
+
+// Transient: Instance baru dibuat setiap kali service diminta (berulang kali)
+builder.Services.AddTransient<ITransientGuidService, TransientGuidService>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Konfigurasi middleware pipeline
+
 if (!app.Environment.IsDevelopment())
 {
+    // Jika bukan environment development, gunakan halaman error khusus dan HSTS (security)
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseHttpsRedirection();  // Redirect HTTP ke HTTPS
+app.UseStaticFiles();       // Mengizinkan akses ke file statis (css, js, gambar, dll)
 
-app.UseRouting();
+app.UseRouting();           // Routing untuk menghubungkan request ke controller/action
 
-app.UseAuthorization();
+app.UseAuthorization();    // Middleware otorisasi (akses kontrol)
 
-app.MapControllerRoute(
+app.MapControllerRoute(     // Definisi routing default untuk controller dan action
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+// Jalankan aplikasi
 app.Run();

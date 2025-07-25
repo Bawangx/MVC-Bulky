@@ -1,31 +1,40 @@
 ﻿@model OrderVM
+
+<!-- Form utama untuk update dan lihat detail order -->
 <form method="post">
+    <!-- Input tersembunyi untuk OrderHeader Id -->
     <input asp-for="OrderHeader.Id" hidden />
     <br />
     <div class="container">
         <div class="card">
+
+            <!-- Header kartu -->
             <div class="card-header bg-dark text-light ml-0">
                 <div class="container row">
                     <div class="col-12 d-none d-md-block col-md-6 pb-1">
                         <i class="fas fa-shopping-cart"></i> &nbsp; Order Summary
                     </div>
                     <div class="col-12 col-md-4 offset-md-2 text-right">
+                        <!-- Tombol kembali ke halaman daftar order -->
                         <a asp-action="Index" class="btn btn-outline-info form-control btn-sm">Back to Orders</a>
                     </div>
                 </div>
             </div>
+
+            <!-- Body kartu -->
             <div class="card-body">
                 <div class="container rounded p-2">
                     <div class="row">
+
+                        <!-- Kolom kiri: Detail Pengambilan (Pickup Details) -->
                         <div class="col-12 col-lg-6 pb-4">
-                            <div class="row">
-                                <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="text-primary">PickUp Details:</span>
-                                </h4>
-                            </div>
+                            <h4 class="text-primary mb-3">PickUp Details:</h4>
+
+                            <!-- Loop untuk setiap field detail pengambilan -->
                             <div class="row my-1">
                                 <div class="col-3">Name</div>
                                 <div class="col-9">
+                                    @* Input bisa readonly atau editable tergantung role user *@
                                     @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
                                     {
                                         <input asp-for="OrderHeader.Name" type="text" class="form-control" />
@@ -35,9 +44,10 @@
                                     {
                                         <input asp-for="OrderHeader.Name" readonly type="text" class="form-control" />
                                     }
-
                                 </div>
                             </div>
+
+                            <!-- Phone -->
                             <div class="row my-1">
                                 <div class="col-3">Phone</div>
                                 <div class="col-9">
@@ -52,6 +62,8 @@
                                     }
                                 </div>
                             </div>
+
+                            <!-- Address -->
                             <div class="row my-1">
                                 <div class="col-3">Address</div>
                                 <div class="col-9">
@@ -66,6 +78,8 @@
                                     }
                                 </div>
                             </div>
+
+                            <!-- City -->
                             <div class="row my-1">
                                 <div class="col-3">City</div>
                                 <div class="col-9">
@@ -80,6 +94,8 @@
                                     }
                                 </div>
                             </div>
+
+                            <!-- State -->
                             <div class="row my-1">
                                 <div class="col-3">State</div>
                                 <div class="col-9">
@@ -94,6 +110,8 @@
                                     }
                                 </div>
                             </div>
+
+                            <!-- Zip Code -->
                             <div class="row my-1">
                                 <div class="col-3">Zip Code</div>
                                 <div class="col-9">
@@ -108,18 +126,24 @@
                                     }
                                 </div>
                             </div>
+
+                            <!-- Email (hanya read-only) -->
                             <div class="row my-1">
                                 <div class="col-3">Email</div>
                                 <div class="col-9">
                                     <input asp-for="OrderHeader.ApplicationUser.Email" readonly type="text" class="form-control" />
                                 </div>
                             </div>
+
+                            <!-- Order Date (hanya read-only) -->
                             <div class="row my-1">
                                 <div class="col-3">Order Date</div>
                                 <div class="col-9">
                                     <input value="@Model.OrderHeader.OrderDate.ToShortDateString()" readonly type="text" class="form-control" />
                                 </div>
                             </div>
+
+                            <!-- Carrier -->
                             <div class="row my-1">
                                 <div class="col-3">Carrier</div>
                                 <div class="col-9">
@@ -133,6 +157,8 @@
                                     }
                                 </div>
                             </div>
+
+                            <!-- Tracking Number -->
                             <div class="row my-1">
                                 <div class="col-3">Tracking</div>
                                 <div class="col-9">
@@ -146,6 +172,8 @@
                                     }
                                 </div>
                             </div>
+
+                            <!-- Shipping Date (read-only) -->
                             <div class="row my-1">
                                 <div class="col-3">Shipping Date</div>
                                 <div class="col-9">
@@ -153,34 +181,31 @@
                                 </div>
                             </div>
 
+                            <!-- Session ID & Payment Intent ID (hanya untuk admin/employee) -->
                             @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
                             {
                                 <div class="row my-1">
                                     <div class="col-3">Session ID</div>
                                     <div class="col-9">
-
                                         <input asp-for="OrderHeader.SessionId" readonly type="text" class="form-control" />
-
                                     </div>
                                 </div>
                                 <div class="row my-1">
                                     <div class="col-3">Payment Intent ID</div>
                                     <div class="col-9">
-
                                         <input asp-for="OrderHeader.PaymentIntentId" readonly type="text" class="form-control" />
-
                                     </div>
                                 </div>
                             }
-                            <div class="row my-1">
 
+                            <!-- Payment Due Date atau Payment Date -->
+                            <div class="row my-1">
                                 @if (Model.OrderHeader.SessionId == null)
                                 {
                                     <div class="col-3">Payment Due Date</div>
                                     <div class="col-9">
                                         <input value="@Model.OrderHeader.PaymentDueData.ToShortDateString()" readonly type="text" class="form-control" />
                                     </div>
-
                                 }
                                 else
                                 {
@@ -189,32 +214,35 @@
                                         <input value="@Model.OrderHeader.PaymentDate.ToShortDateString()" readonly type="text" class="form-control" />
                                     </div>
                                 }
-
                             </div>
+
+                            <!-- Payment Status -->
                             <div class="row my-1">
                                 <div class="col-3">Payment Status</div>
                                 <div class="col-9">
                                     <input asp-for="OrderHeader.PaymentStatus" readonly type="text" class="form-control" />
                                 </div>
                             </div>
+
+                            <!-- Tombol update detail order hanya untuk admin/employee -->
                             @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
                             {
                                 <button type="submit" asp-action="UpdateOrderDetail" class="btn btn-warning form-control my-1">Update Order Details</button>
                             }
                         </div>
+
+                        <!-- Kolom kanan: Ringkasan Order -->
                         <div class="col-12 col-lg-5 offset-lg-1">
-                            <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="text-primary">Order Summary</span>
-                            </h4>
+                            <h4 class="text-primary mb-3">Order Summary</h4>
                             <label class="btn btn-outline-primary form-control my-2">Order Status - @Model.OrderHeader.OrderStatus</label>
 
+                            <!-- List produk dalam order -->
                             <ul class="list-group mb-3">
                                 @foreach (var detail in Model.OrderDetail)
                                 {
                                     <li class="list-group-item d-flex justify-content-between p-2">
                                         <div class="row container">
                                             <div class="col-8">
-
                                                 <h6 class="my-0 text-primary">@detail.Product.Title</h6>
                                                 <small class="text-muted">Price : @detail.Price.ToString("c")</small><br />
                                                 <small class="text-muted">Quantity : @detail.Count</small>
@@ -225,6 +253,7 @@
                                         </div>
                                     </li>
                                 }
+                                <!-- Total harga order -->
                                 <li class="list-group-item bg-primary">
                                     <div class="row container">
                                         <div class="col-6">
@@ -237,64 +266,71 @@
                                 </li>
                             </ul>
 
+                            <!-- Tombol bayar jika kondisi tertentu terpenuhi -->
                             @if (Model.OrderHeader.PaymentStatus == SD.PaymentStatusDelayedPayment &&
                                                         Model.OrderHeader.OrderStatus == SD.StatusShipped)
                             {
                                 <button type="submit" class="btn btn-success form-control my-1">Pay Now</button>
                             }
+
+                            <!-- Tombol-tombol aksi untuk admin/employee sesuai status order -->
                             @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
                             {
                                 @if (Model.OrderHeader.OrderStatus == SD.StatusApproved)
                                 {
-                                    <button type="submit" asp-action="StartProcessing"
-                                            class="btn btn-primary form-control my-1">
+                                    <button type="submit" asp-action="StartProcessing" class="btn btn-primary form-control my-1">
                                         Start Processing
                                     </button>
                                 }
                                 @if (Model.OrderHeader.OrderStatus == SD.StatusInProcess)
                                 {
-                                    <button type="submit" asp-action="ShipOrder" onclick="return validateInput()" class="btn btn-primary form-control my-1">Ship Order</button>
+                                    <button type="submit" asp-action="ShipOrder" onclick="return validateInput()" class="btn btn-primary form-control my-1">
+                                        Ship Order
+                                    </button>
                                 }
-
                                 @if (Model.OrderHeader.OrderStatus != SD.StatusRefunded &&
                                                             Model.OrderHeader.OrderStatus != SD.StatusCancelled &&
                                                             Model.OrderHeader.OrderStatus != SD.StatusShipped)
                                 {
-                                    <button asp-action="CancelOrder" type="submit" class="btn btn-danger form-control my-1">Cancel Order</button>
+                                    <button asp-action="CancelOrder" type="submit" class="btn btn-danger form-control my-1">
+                                        Cancel Order
+                                    </button>
                                 }
                             }
                         </div>
+
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </form>
 
-
 @section Scripts {
-
+    <!-- Validation scripts ASP.NET Core -->
     <partial name="_ValidationScriptsPartial" />
+
     <script>
-        function validateInput(){
-            if(document.getElementById("trackingNumber").value==""){
+        // Fungsi validasi sebelum submit "Ship Order"
+        function validateInput() {
+            if (document.getElementById("trackingNumber").value == "") {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
                     text: 'Please enter tracking number!',
                 });
-                return false;
+                return false; // Stop submit jika kosong
             }
-            if (document.getElementById("carrier").value =="") {
+            if (document.getElementById("carrier").value == "") {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
                     text: 'Please enter carrier!',
                 });
-                return false;
+                return false; // Stop submit jika kosong
             }
-            return true;
+            return true; // Lanjut submit jika valid
         }
     </script>
-
 }

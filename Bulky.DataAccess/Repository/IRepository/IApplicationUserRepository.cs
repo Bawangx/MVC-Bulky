@@ -1,15 +1,12 @@
-﻿using Bulky.DataAccess.Repository.IRepository;
-using Bulky.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Bulky.Models;
 
 namespace Bulky.DataAccess.Repository.IRepository
 {
+    // Interface untuk mengelola entitas ApplicationUser
+    // Mewarisi operasi dasar CRUD dari IRepository<ApplicationUser>
     public interface IApplicationUserRepository : IRepository<ApplicationUser>
     {
-        public void Update(ApplicationUser applicationUser);
+        // Method khusus untuk update data ApplicationUser
+        void Update(ApplicationUser applicationUser);
     }
 }

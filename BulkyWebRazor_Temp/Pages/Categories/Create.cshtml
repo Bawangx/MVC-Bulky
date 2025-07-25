@@ -4,34 +4,39 @@
 <form method="post">
     <div class="row p-3 mt-4">
         <div class="row pb-2">
-        <h2 class="text-primary">Create Category</h2>
-        <hr/>
-    </div>
-    @* <div asp-validation-summary="All"></div> *@
-    <div class="mb-3 row p-1">
-        <label asp-for="Category.Name" class="p-0"></label>
-        <input asp-for="Category.Name" type="text" class="form-control"/>
-        <span asp-validation-for="Category.Name" class="text-danger"></span>
-    </div>
-    <div class="mb-3 row p-1">
-        <label asp-for="Category.DisplayOrder" class="p-0"></label>
-        <input asp-for="Category.DisplayOrder" type="text" class="form-control"/>
-        <span asp-validation-for="Category.DisplayOrder" class="text-danger"></span>
-    </div>
-    <div class="row">
-        <div class="col-6 col-md-3">
-            <button type="submit" class="btn btn-primary form-control">Create</button>
+            <h2 class="text-primary">Create Category</h2>
+            <hr />
         </div>
-        <div class="col-6 col-md-3">
-            <a asp-page="/categories/index" class="btn btn-outline-secondary border form-control">
-                Back To List
-            </a>
+
+        @* Validation summary menampilkan semua error validasi, bisa diaktifkan jika ingin menampilkan ringkasan error *@
+        @* <div asp-validation-summary="All" class="text-danger"></div> *@
+
+        <div class="mb-3 row p-1">
+            <label asp-for="Category.Name" class="p-0"></label>
+            <input asp-for="Category.Name" type="text" class="form-control" />
+            <span asp-validation-for="Category.Name" class="text-danger"></span>  @* Tampilkan error khusus untuk field Name *@
+        </div>
+
+        <div class="mb-3 row p-1">
+            <label asp-for="Category.DisplayOrder" class="p-0"></label>
+            <input asp-for="Category.DisplayOrder" type="number" class="form-control" />
+            <span asp-validation-for="Category.DisplayOrder" class="text-danger"></span> @* Tampilkan error khusus untuk field DisplayOrder *@
+        </div>
+
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <button type="submit" class="btn btn-primary form-control">Create</button>
             </div>
+            <div class="col-6 col-md-3">
+                <a asp-page="/categories/index" class="btn btn-outline-secondary border form-control">
+                    Back To List
+                </a>
+            </div>
+        </div>
     </div>
-</div>
 </form>
-@section Scripts{
-    @{
-        <partial name="_ValidationScriptsPartial"/>
-    }
+
+@section Scripts {
+    @* Partial view untuk mengaktifkan validasi client-side dengan jquery validate *@
+    <partial name="_ValidationScriptsPartial" />
 }

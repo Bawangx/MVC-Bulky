@@ -1,30 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bulky.Utility
 {
+    // Kelas static ini berfungsi sebagai tempat menyimpan nilai-nilai konstan
+    // yang sering digunakan di aplikasi, misalnya nama role, status order, dll.
     public static class SD
     {
-        public const string Role_Customer = "Customer";
-        public const string Role_Company = "Company";
-        public const string Role_Admin = "Admin";
-        public const string Role_Employee = "Employee";
+        // Role pengguna dalam aplikasi
+        public const string Role_Customer = "Customer";   // Pelanggan
+        public const string Role_Company = "Company";     // Perusahaan
+        public const string Role_Admin = "Admin";         // Administrator
+        public const string Role_Employee = "Employee";   // Karyawan
 
-        public const string StatusPending = "Pending";
-        public const string StatusApproved = "Approved";
-        public const string StatusInProcess = "InProcess";
-        public const string StatusShipped = "Shipped";
-        public const string StatusCancelled = "Cancelled";
-        public const string StatusRefunded = "Refunded";
+        // Status order
+        public const string StatusPending = "Pending";       // Menunggu proses
+        public const string StatusApproved = "Approved";     // Disetujui
+        public const string StatusInProcess = "InProcess";   // Sedang diproses
+        public const string StatusShipped = "Shipped";       // Sudah dikirim
+        public const string StatusCancelled = "Cancelled";   // Dibatalkan
+        public const string StatusRefunded = "Refunded";     // Sudah direfund
 
-        public const string PaymentStatusPending = "Pending";
-        public const string PaymentStatusApproved = "Approved";
-        public const string PaymentStatusDelayedPayment = "DelayedPayment";
-        public const string PaymentStatusRejected = "Rejected";
+        // Status pembayaran
+        public const string PaymentStatusPending = "Pending";          // Pembayaran menunggu
+        public const string PaymentStatusApproved = "Approved";        // Pembayaran disetujui
+        public const string PaymentStatusDelayedPayment = "DelayedPayment";  // Pembayaran tertunda
+        public const string PaymentStatusRejected = "Rejected";        // Pembayaran ditolak
 
+        // Nama session untuk keranjang belanja (shopping cart)
         public const string SessionCart = "SessionShoppingCart";
     }
 }
