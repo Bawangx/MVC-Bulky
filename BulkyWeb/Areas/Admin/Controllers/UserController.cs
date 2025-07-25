@@ -18,12 +18,12 @@ namespace BulkyWeb.Areas.Admin.Controllers
     [Authorize(Roles = SD.Role_Admin)]
     public class UserController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;       // Untuk operasi Identity User
+        private readonly UserManager<ApplicationUser> _userManager;       // Untuk operasi Identity User
         private readonly RoleManager<IdentityRole> _roleManager;       // Untuk operasi Role Identity
         private readonly IUnitOfWork _unitOfWork;                      // Unit of Work untuk akses database
 
         // Konstruktor, dependency injection UserManager, RoleManager, dan UnitOfWork
-        public UserController(UserManager<IdentityUser> userManager, IUnitOfWork unitOfWork, RoleManager<IdentityRole> roleManager)
+        public UserController(UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork, RoleManager<IdentityRole> roleManager)
         {
             _unitOfWork = unitOfWork;
             _roleManager = roleManager;
